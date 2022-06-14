@@ -51,11 +51,11 @@ async function listPosts(pageToken = null) {
  * 
  * @returns  {array}
  */
-async function extractEdges(...pages) {
+function extractEdges(...edges) {
     const result = [];
 
-    for (const page of pages) {
-        result.push(...page.data.user.edge_owner_to_timeline_media.edges)
+    for (const edge of edges) {
+        result.push(...edge.data.user.edge_owner_to_timeline_media.edges)
     }
 
     return result;
