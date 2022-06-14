@@ -61,9 +61,33 @@ function extractEdges(...edges) {
     return result;
 }
 
-(async () => {
-    await fs.stat(instagram_user).catch(() => fs.mkdir(instagram_user))
+/**
+ * Capturas informações do usuário
+ *  - pk
+ *  - username
+ *  - full_name
+ *  - is_verified
+ *  - media_count
+ *  - follower_count
+ *  - following_count
+ *  - following_tag_count
+ *  - biography
+ *  - has_videos
+ *  - usertags_count
+ * 
+ * @returns {Promise<Object>}
+ */
+async function captureUserInfo() {
+    const { data } = await axios.get('/ig/info_username/')
+        .catch((e) => {
+            console.warn(e)
+            throw new Error('Não foi possível capturar as informações do usuário '.concat(instagram_user))
+        });
 
+    return data.user;
+}
+
+(async () => {
     /** Captura as 10 primeiras postagens */
     const page1 = await listPosts();
 
