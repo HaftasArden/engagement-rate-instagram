@@ -35,18 +35,13 @@ async function listPosts(pageToken = null) {
         params.end_cursor = pageToken;
     }
 
-    const { data } = await axios.get(
-        'https://instagram-scraper-2022.p.rapidapi.com/ig/posts_username/',
-        {
-            params,
-            headers: {
-                'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY,
-                'X-RapidAPI-Host': process.env.X_RAPIDAPI_HOST,
-            }
-        }
-    );
+    const response = await axios.get('/ig/posts_username/', { params })
+        .catch((e) => {
+            console.warn(e)
+            throw new Error('Não foi possível capturar as publicações do usuário '.concat(instagram_user))
+        });
 
-    return data;
+    return response.data;
 }
 
 /**
