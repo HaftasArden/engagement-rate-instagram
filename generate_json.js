@@ -1,16 +1,28 @@
-require('dotenv').config();
-
+require('dotenv').config({ path: `${__dirname}/.env` });
 const fs = require('fs/promises');
-const { default: axios } = require('axios')
+const path = require('path');
+const Axios = require('axios').default;
 
 const [_, __, instagram_user] = process.argv;
+const [ curDate ] = new Date().toISOString().split('T');
+
+const axios = Axios.create({
+    baseURL: 'https://instagram-scraper-2022.p.rapidapi.com',
+    headers: {
+        'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY,
+        'X-RapidAPI-Host': process.env.X_RAPIDAPI_HOST,
+    },
+    params: {
+        user: instagram_user
+    }
+})
 
 /**
  * Lista 10 postagens do instagram
  * 
  * @param {string} page Token da página
  * 
- * @returns {array}
+ * @returns {Promise<array>}
  */
 async function listPosts(pageToken = null) {
     if (pageToken === undefined) return [];
