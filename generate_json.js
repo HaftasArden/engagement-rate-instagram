@@ -95,27 +95,33 @@ async function captureUserInfo() {
     const page2 = await listPosts(page1.data.user.edge_owner_to_timeline_media.page_info?.end_cursor);
 
     /** Extrai as informações dos posts, retornando os dados das 20 postagens mais recentes */
-    const edges = await extractEdges(page1, page2);
+    const edges = extractEdges(page1, page2);
 
     const result = [];
 
     /** Formata as informações para melhor legibilidade */
     for (const edge of edges) {
         result.push({
-            "id": edge.node.id,
-            "display_url": edge.node.display_url,
-            "shortcode": edge.node.shortcode,
-            "totals": {
-                "comments": edge.node.edge_media_to_comment.count,
-                "likes": edge.node.edge_media_preview_like.count,
-                "views": edge.node?.video_view_count ?? 0           /** O número de visualizações dos vídeos é ignorado do cálculo */
+            id: edge.node.id,
+            display_url: edge.node.display_url,
+            shortcode: edge.node.shortcode,
+            is_video: edge.node.is_video,
+            totals: {
+                comments: edge.node.edge_media_to_comment.count,
+                likes: edge.node.edge_media_preview_like.count,
+                views: edge.node?.video_view_count ?? 0           /** O número de visualizações dos vídeos é ignorado no cálculo */
             }
         });
     }
 
-    fs.exi
+    const userInfo = await captureUserInfo();
+
+    const userPath = path.resolve(__dirname, 'data', instagram_user, curDate);
+
+    await fs.mkdir(userPath, { recursive: true }).catch(() => {})
 
     /** Salva as informações */
-    fs.writeFile(`${instagram_user}/posts_original.json`, JSON.stringify(edges));
-    fs.writeFile(`${instagram_user}/posts.json`, JSON.stringify(result));
+    fs.writeFile(path.resolve(userPath, 'posts_original.json'), JSON.stringify(edges, null, 4));
+    fs.writeFile(path.resolve(userPath, 'posts.json'), JSON.stringify(result, null, 4));
+    fs.writeFile(path.resolve(userPath, 'user.json'), JSON.stringify(userInfo, null, 4));
 })();
