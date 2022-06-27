@@ -35,8 +35,67 @@ A saída será semelhante a esta:
 
 ```jsonc
 {
-  rate: 1.0293575246948898, /** Taxa de engajamento */
-  likes_per_post: 339963.25, /** Média de likes por postagem */
-  comments_per_post: 8056.6 /** Média de comentários por postagem */
+  "general": {
+    "rate": "0.54",                   /** Taxa de engajamento em % */
+    "likes_per_post": "66191.00",     /** Média de likes por postagem */
+    "comments_per_post": "1722.00",   /** Média de comentários por postagem */
+    "followers": 12499409             /** Número de seguidores */
+  },
+  "by_date": {
+    "2022-06-27": {
+      "rate": 0.54,
+      "likes_per_post": 66191,
+      "comments_per_post": 1722,
+      "followers": 12499409,
+      "most": {
+        "liked": {
+          "id": "0123456789",
+          "display_url": "https://example.com/cover.jpg",
+          "shortcode": "HaftasArden",
+          "is_video": false,
+          "totals": {
+            "comments": 0,
+            "likes": 392762,
+            "views": 0
+          }
+        },
+        "commented": {
+          "id": "0123456789",
+          "display_url": "https://example.com/cover.jpg",
+          "shortcode": "HaftasArden",
+          "is_video": true,
+          "totals": {
+            "comments": 8968,
+            "likes": 64477,
+            "views": 2887544
+          }
+        }
+      },
+      "less": {
+        "liked": {
+          "id": "0123456789",
+          "display_url": "https://example.com/cover.jpg",
+          "shortcode": "HaftasArden",
+          "is_video": false,
+          "totals": {
+            "comments": 0,
+            "likes": 392762,
+            "views": 0
+          }
+        },
+        "commented": {
+          "id": "0123456789",
+          "display_url": "https://example.com/cover.jpg",
+          "shortcode": "HaftasArden",
+          "is_video": true,
+          "totals": {
+            "comments": 8968,
+            "likes": 64477,
+            "views": 2887544
+          }
+        }
+      }
+    }
+  }
 }
 ```
