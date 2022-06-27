@@ -80,50 +80,6 @@ async function calculeRateByDate(date) {
         })
 }
 
-function getMostLikesAndComments(posts) {
-    let likes = { shortcode: '', total: 0 };
-    let comments = { shortcode: '', total: 0 };
-
-    for (const post of posts) {
-        const shortcode = post['most'].liked.shortcode;
-
-        if (likes.total < post['most'].liked.totals.likes) {
-            likes = { shortcode, total: post['most'].liked.totals.likes };
-        }
-
-        if (comments.total < post['most'].liked.totals.comments) {
-            comments = { shortcode, total: post['most'].liked.totals.comments };
-        }
-    }
-
-    return {
-        likes,
-        comments
-    }
-}
-
-async function getLessLikesAndComments(posts) {
-    const likes = {};
-    const comments = {};
-
-    for (const post of posts) {
-        likes[post.less.liked.shortcode] = {
-            shortcode: post.less.liked.shortcode,
-            total: Math.max(post.less.liked.totals.likes, likes[post.less.liked.shortcode]?.total ?? 0)
-        };
-
-        if (post.less.liked.shortcode === 'CeycJCHuQ8e') console.log( { a: post.less.liked.totals.likes, b: likes[post.less.liked.shortcode]?.total ?? 0 } )
-    }
-
-    const lessLike = Object.values(likes).sort((prev, cur) => prev.total < cur.total ? -1 : 1).at(0)
-    const lessCommented = Object.values(comments).sort((prev, cur) => prev.total < cur.total ? -1 : 1).at(0)
-
-    return {
-        likes: lessLike,
-        comments: lessCommented
-    }
-}
-
 (async () => {
     const dates = await fs.readdir(pathUser);
     const by_date = {};
@@ -148,9 +104,6 @@ async function getLessLikesAndComments(posts) {
 
     const avgLength = by_date_values.length;
 
-    const most = await getMostLikesAndComments(by_date_values);
-    const less = await getLessLikesAndComments(by_date_values);
-
     const general = {
         rate: (avgRate / avgLength).toFixed(2),
         likes_per_post: (avgLikesPerPost / avgLength).toFixed(2),
@@ -160,8 +113,6 @@ async function getLessLikesAndComments(posts) {
 
     console.log(JSON.stringify({
         general,
-        most,
-        less,
         by_date
     }, null, 4))
 })();
