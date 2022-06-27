@@ -6,8 +6,8 @@
     "author": "HaftasArden <haftasarden@proton.me>",
     "license": "GPLv3",
     "dependencies": {
-      "axios": "^0.27.2",
-      "dotenv": "^16.0.1"
+        "axios": "^0.27.2",
+        "dotenv": "^16.0.1",
+        "text-table": "^0.2.0"
     }
-  }
-  
+}
